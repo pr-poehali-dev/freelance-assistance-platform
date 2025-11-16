@@ -6,9 +6,17 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import Icon from '@/components/ui/icon';
+import { SearchModal } from '@/components/SearchModal';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      setIsSearchModalOpen(true);
+    }
+  };
 
   const categories = [
     { name: 'Уборка квартиры', icon: 'Home', count: 234 },
@@ -123,8 +131,9 @@ const Index = () => {
               className="h-14 text-lg"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
-            <Button size="lg" className="h-14 px-8">
+            <Button size="lg" className="h-14 px-8" onClick={handleSearch}>
               <Icon name="Search" className="mr-2" size={20} />
               Найти
             </Button>
@@ -390,6 +399,12 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      <SearchModal 
+        open={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
+        searchQuery={searchQuery}
+      />
     </div>
   );
 };
